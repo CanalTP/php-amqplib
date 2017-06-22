@@ -351,7 +351,10 @@ class StreamIO extends AbstractIO
 
             // server has gone away
             if (($this->heartbeat * 2) < $t_read) {
-                $this->reconnect();
+                // Reconnection does not work actually and needs a proper new connection
+                // In the meantime, I prefer throw an exception
+                //$this->reconnect();
+                throw new AMQPRuntimeException('No heartbeat received from server in ' . ($this->heartbeat * 2) . ' seconds. Aborting.');
             }
 
             // time for client to send a heartbeat
